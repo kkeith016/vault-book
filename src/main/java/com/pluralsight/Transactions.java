@@ -53,11 +53,7 @@ public class Transactions {
 
 
     public String toString() {
-        return "Transactions{" +
-                "date=" + date +
-                ", time=" + time +
-                ", description='" + description + '\'' +
-                ", amount=" + amount +
-                '}';
+        String formattedTime = String.format("%02d:%02d:%02d", time.getHour(), time.getMinute(), time.getSecond());
+        return date + "|" + formattedTime + "|" + description + "|" + vendor + "|" + amount;
     }
 }

@@ -42,7 +42,7 @@ public class VaultBook {
     public static void homeScreen() {
         System.out.println("How may we assist you today?");
         System.out.println("(1) Add Deposit");
-        System.out.println("(2) Make Withdrawal");
+        System.out.println("(2) Make Payment");
         System.out.println("(3) Show Balance");
         System.out.println("(4) Exit");
     }
@@ -57,7 +57,7 @@ public class VaultBook {
                 addDeposit(keyboard, transactions);
                 break;
             case 2:
-                makeWithdraw(keyboard, transactions);
+                makePayment(keyboard, transactions);
                 break;
             case 3:
                 showBalance(transactions);
@@ -102,7 +102,7 @@ public class VaultBook {
         System.out.println("Deposit added successfully.");
     }
 
-    public static void makeWithdraw(Scanner keyboard, ArrayList<Transactions> transactions) {
+    public static void makePayment(Scanner keyboard, ArrayList<Transactions> transactions) {
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
         double amount;
@@ -110,7 +110,7 @@ public class VaultBook {
         double balance = getTotalBalance(transactions);
 
         while (true) {
-            System.out.print("Enter withdrawal amount: ");
+            System.out.print("Enter Payment amount: ");
             amount = keyboard.nextDouble();
             keyboard.nextLine();
 
@@ -129,12 +129,12 @@ public class VaultBook {
         System.out.print("Enter vendor: ");
         String vendor = keyboard.nextLine();
 
-        Transactions withdrawal = new Transactions(date, time, description, amount, vendor);
+        Transactions payment = new Transactions(date, time, description, amount, vendor);
 
-        transactions.add(withdrawal);
-        appendTransaction(withdrawal);
+        transactions.add(payment);
+        appendTransaction(payment);
 
-        System.out.println("Withdrawal added successfully.");
+        System.out.println("Payment added successfully.");
     }
 
     public static void showBalance(ArrayList<Transactions> transactions) {

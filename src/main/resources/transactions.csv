@@ -124,4 +124,6 @@ date|time|description|vendor|amount
 2025-09-05|12:00:00|Lunch|Panera|-20.00
 2025-10-01|09:00:00|Monthly Rent|Main Street Realty|-950.00
 2025-10-03|14:00:00|Client Payment INV-1026|Acme Corp|2000.00
-2025-10-09|09:10:00|Coffee|Starbucks|-8.25Transactions{date=2025-10-10, time=14:29:15.002899500, description='RENT', amount=-1500.0}
+2025-10-09|09:10:00|Coffee|Starbucks|-8.25
+2025-10-10|14:36:49|Refund|Starbucks|45.0
+2025-10-10|14:37:21|Oppertunity |ABC Mouse |-2400.0
