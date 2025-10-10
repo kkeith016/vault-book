@@ -16,12 +16,9 @@ public class VaultBook {
         run();
     }
 
-    public static void run() { Scanner keyboard = new Scanner(System.in);
-
-        // <-- ArrayList lives in main()
+    public static void run() {
+        Scanner keyboard = new Scanner(System.in);
         ArrayList<Transactions> transactions = new ArrayList<>();
-
-        // Load existing transactions from CSV
         loadTransactions(transactions);
 
         System.out.println("""
@@ -96,8 +93,8 @@ public class VaultBook {
 
         Transactions deposit = new Transactions(date, time, description, amount, vendor);
 
-        transactions.add(deposit);       // Add to ArrayList
-        appendTransaction(deposit);      // Write to CSV
+        transactions.add(deposit);
+        appendTransaction(deposit);
 
         System.out.println("Deposit added successfully.");
     }
@@ -148,7 +145,7 @@ public class VaultBook {
         System.exit(0);
     }
 
-    // ------------------- CSV Handling -------------------
+
     public static void loadTransactions(ArrayList<Transactions> transactions) {
         String filePath = "src/main/resources/transactions.csv";
 
