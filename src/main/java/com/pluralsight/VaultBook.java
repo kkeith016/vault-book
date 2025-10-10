@@ -77,7 +77,16 @@ public class VaultBook {
         }else {
             break;
         }
-        }
+    }
+        System.out.print("Enter brief description: ");
+        String description = keyboard.nextLine();
+
+        System.out.print("Enter vendor: ");
+        String vendor = keyboard.nextLine();
+
+        Transactions deposit = new Transactions(date,time,description,amount,vendor);
+
+
 
     }
     public static void makeWithdraw(Scanner keyboard) {
