@@ -184,6 +184,7 @@ public class VaultBook {
             total += t.getAmount();
         }
         return total;
+
     }
     }
 

@@ -55,5 +55,6 @@ public class Transactions {
     public String toString() {
         String formattedTime = String.format("%02d:%02d:%02d", time.getHour(), time.getMinute(), time.getSecond());
         return date + "|" + formattedTime + "|" + description + "|" + vendor + "|" + amount;
+
     }
 }
