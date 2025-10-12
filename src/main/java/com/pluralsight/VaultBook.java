@@ -195,7 +195,7 @@ public class VaultBook {
         ====================================
                   LEDGER SYSTEM            
         ====================================
-        |  1  | Display All Transactions   |
+        |  1  | Display All Transactions  |
         |  2  | View All Deposits         |
         |  3  | View All Payments         |
         |  4  | Reports                   |
