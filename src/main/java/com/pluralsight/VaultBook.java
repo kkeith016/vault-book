@@ -1,6 +1,7 @@
 package com.pluralsight;
 
 
+import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -171,7 +172,7 @@ public class VaultBook {
                     allPayments(transactions);
                     break;
                 case 4:
-                    reports();
+                    reports(keyboard, transactions);
                     break;
                 case 5:
                     System.out.println("Returning to Home Screen...");
@@ -245,9 +246,68 @@ public class VaultBook {
         }
         System.out.println("-----------------------------------------------------------------------------------------");
     }
-    public static void reports() {
-        System.out.println("this is my testing");
+    public static void reports(Scanner keyboard, ArrayList<Transactions> transactions) {
+        reportsMenu();
+        boolean running = true;
+        System.out.print("Please enter your option: ");
+        int choice = keyboard.nextInt();
+        keyboard.nextLine();
+
+        while(running){
+            switch (choice){
+                case 1:
+                     monthToDate();
+                     break;
+                case 2:
+                     previousMonth();
+                     break;
+                case 3:
+                     yearToDate();
+                     break;
+                case 4:
+                     previousYear();
+                     break;
+                case 5:
+                     searchByVendor();
+                     break;
+                case 6:
+
+
+
+
+            }
+        };
     }
+
+    public static void reportsMenu(){
+        System.out.print("""
+            ====================================
+                          REPORTS               
+            ====================================
+            |  1  | Month to Date              |
+            |  2  | Previous Month             |
+            |  3  | Year to Date               |
+            |  4  | Previous Year              |
+            |  5  | Search by Vendor           |
+            |  6  | Back to Ledger             |
+            |  7  | Back to Home               |
+            ====================================
+            """);
+    }
+
+    public static void monthToDate(){}
+
+    public static void previousMonth(){}
+
+    public static void yearToDate(){}
+
+    public static void previousYear(){}
+
+    public static void searchByVendor(){}
+
+
+
+
 
 
     public static void exit(Scanner keyboard) {
