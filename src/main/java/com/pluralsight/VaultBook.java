@@ -41,10 +41,12 @@ public class VaultBook {
         System.out.println("(1) Add Deposit");
         System.out.println("(2) Make Payment");
         System.out.println("(3) Show Balance");
-        System.out.println("(4) Exit");
+        System.out.println("(4) Ledger");
+        System.out.println("(5) Exit");
     }
 
     public static void menuSelector(Scanner keyboard, ArrayList<Transactions> transactions) {
+        System.out.println();
         System.out.print("Please choose your option: ");
         int choice = keyboard.nextInt();
         keyboard.nextLine();
@@ -60,6 +62,9 @@ public class VaultBook {
                 showBalance(transactions);
                 break;
             case 4:
+                ledger(keyboard);
+                break;
+            case 5:
                 exit(keyboard);
                 break;
             default:
@@ -67,6 +72,8 @@ public class VaultBook {
                 break;
         }
         System.out.println();
+        System.out.println("Press ENTER to continue...");
+        keyboard.nextLine();
     }
 
     public static void addDeposit(Scanner keyboard, ArrayList<Transactions> transactions) {
@@ -138,6 +145,69 @@ public class VaultBook {
         double balance = getTotalBalance(transactions);
         System.out.printf("Your current total balance is: $%.2f%n", balance);
     }
+
+    public static void ledger(Scanner keyboard) {
+        boolean backToHomeScreen = false;
+        while (!backToHomeScreen) {
+            ledgerMenu();
+
+            System.out.print("Please enter your option: ");
+            int option = keyboard.nextInt();
+            keyboard.nextLine();
+
+            switch (option) {
+                case 1:
+                    viewAllTransactions();
+                    break;
+                case 2:
+                    allDeposits();
+                    break;
+                case 3:
+                    allPayments();
+                    break;
+                case 4:
+                    reports();
+                    break;
+                case 5:
+                    System.out.println("Returning to Home Screen...");
+                    backToHomeScreen = true;
+                    break;
+                default:
+                    System.out.println("Invalid option. Try again.");
+            }
+            if (!backToHomeScreen) {
+                System.out.println();
+                System.out.println("Press ENTER to continue...");
+                keyboard.nextLine();
+            }
+
+        }
+
+    }
+
+    private static void ledgerMenu() {
+        System.out.println();
+        System.out.println("Welcome to the Ledger System");
+        System.out.println("(1) Display all transactions");
+        System.out.println("(2) View all Deposits");
+        System.out.println("(3) View All Payments");
+        System.out.println("(4) Reports");
+        System.out.println("(5) Return to home screen");
+    }
+
+    public static void viewAllTransactions() {
+        System.out.println("this is my testing");
+    }
+    public static void allDeposits() {
+        System.out.println("this is my testing");
+    }
+    public static void allPayments() {
+        System.out.println("this is my testing");
+    }
+    public static void reports() {
+        System.out.println("this is my testing");
+    }
+
 
     public static void exit(Scanner keyboard) {
         keyboard.close();
