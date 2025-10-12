@@ -148,9 +148,9 @@ public class VaultBook {
 
     public static void ledger(Scanner keyboard) {
         boolean backToHomeScreen = false;
+
         while (!backToHomeScreen) {
             ledgerMenu();
-
             System.out.print("Please enter your option: ");
             int option = keyboard.nextInt();
             keyboard.nextLine();
