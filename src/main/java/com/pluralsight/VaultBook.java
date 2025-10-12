@@ -37,12 +37,17 @@ public class VaultBook {
     }
 
     public static void homeScreen() {
-        System.out.println("How may we assist you today?");
-        System.out.println("(1) Add Deposit");
-        System.out.println("(2) Make Payment");
-        System.out.println("(3) Show Balance");
-        System.out.println("(4) Ledger");
-        System.out.println("(5) Exit");
+        System.out.println("""
+        ====================================
+                     HOME MENU              
+        ====================================
+        |  1  | Add Deposit                |
+        |  2  | Make Payment               |
+        |  3  | Show Balance               |
+        |  4  | Ledger                     |
+        |  5  | Exit                       |
+        ====================================
+        """);
     }
 
     public static void menuSelector(Scanner keyboard, ArrayList<Transactions> transactions) {
@@ -62,7 +67,7 @@ public class VaultBook {
                 showBalance(transactions);
                 break;
             case 4:
-                ledger(keyboard);
+                ledger(keyboard, transactions);
                 break;
             case 5:
                 exit(keyboard);
@@ -146,7 +151,7 @@ public class VaultBook {
         System.out.printf("Your current total balance is: $%.2f%n", balance);
     }
 
-    public static void ledger(Scanner keyboard) {
+    public static void ledger(Scanner keyboard,ArrayList<Transactions> transactions) {
         boolean backToHomeScreen = false;
 
         while (!backToHomeScreen) {
@@ -157,13 +162,13 @@ public class VaultBook {
 
             switch (option) {
                 case 1:
-                    viewAllTransactions();
+                    viewAllTransactions(transactions);
                     break;
                 case 2:
-                    allDeposits();
+                    allDeposits(transactions);
                     break;
                 case 3:
-                    allPayments();
+                    allPayments(transactions);
                     break;
                 case 4:
                     reports();
@@ -186,23 +191,59 @@ public class VaultBook {
     }
 
     private static void ledgerMenu() {
-        System.out.println();
-        System.out.println("Welcome to the Ledger System");
-        System.out.println("(1) Display all transactions");
-        System.out.println("(2) View all Deposits");
-        System.out.println("(3) View All Payments");
-        System.out.println("(4) Reports");
-        System.out.println("(5) Return to home screen");
+        System.out.println("""
+        ====================================
+                  LEDGER SYSTEM            
+        ====================================
+        |  1  | Display All Transactions   |
+        |  2  | View All Deposits         |
+        |  3  | View All Payments         |
+        |  4  | Reports                   |
+        |  5  | Return to Home Screen     |
+        ====================================
+        """);
     }
 
-    public static void viewAllTransactions() {
+    public static void viewAllTransactions(ArrayList<Transactions> transactions) {
         System.out.println("this is my testing");
     }
-    public static void allDeposits() {
-        System.out.println("this is my testing");
+    public static void allDeposits(ArrayList<Transactions> transactions) {
+        System.out.println();
+        System.out.println("==================================== ALL DEPOSITS =======================================");
+        System.out.printf("%-12s | %-8s | %-25s | %-20s | %10s%n",
+                "DATE", "TIME", "DESCRIPTION", "VENDOR", "AMOUNT");
+        System.out.println("-----------------------------------------------------------------------------------------");
+
+        for(Transactions t : transactions){
+            if(t.getAmount() > 0){
+                System.out.printf("%-12s | %-8s | %-25s | %-20s | %10.2f%n",
+                        t.getDate(),
+                        t.getTime().toString().substring(0, 5),
+                        t.getDescription(),
+                        t.getVendor(),
+                        t.getAmount());
+            }
+        }
+        System.out.println("-----------------------------------------------------------------------------------------");
     }
-    public static void allPayments() {
-        System.out.println("this is my testing");
+    public static void allPayments(ArrayList<Transactions> transactions) {
+        System.out.println();
+        System.out.println("==================================== ALL PAYMENTS =======================================");
+        System.out.printf("%-12s | %-8s | %-25s | %-20s | %10s%n",
+                "DATE", "TIME", "DESCRIPTION", "VENDOR", "AMOUNT");
+        System.out.println("-----------------------------------------------------------------------------------------");
+
+        for(Transactions t : transactions){
+            if(t.getAmount() < 0){
+                System.out.printf("%-12s | %-8s | %-25s | %-20s | %10.2f%n",
+                        t.getDate(),
+                        t.getTime().toString().substring(0, 5),
+                        t.getDescription(),
+                        t.getVendor(),
+                        t.getAmount());
+            }
+        }
+        System.out.println("-----------------------------------------------------------------------------------------");
     }
     public static void reports() {
         System.out.println("this is my testing");

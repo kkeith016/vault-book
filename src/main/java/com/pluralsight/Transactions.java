@@ -51,6 +51,9 @@ public class Transactions {
         this.amount = amount;
     }
 
+    public String getVendor() {
+        return vendor;
+    }
 
     public String toString() {
         String formattedTime = String.format("%02d:%02d:%02d", time.getHour(), time.getMinute(), time.getSecond());
