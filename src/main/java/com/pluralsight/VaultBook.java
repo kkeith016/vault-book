@@ -33,7 +33,7 @@ public class VaultBook {
 
         while (true) {
             homeScreen();
-            menuSelector(keyboard, transactions); // pass the ArrayList
+            menuSelector(keyboard, transactions);
         }
     }
 
@@ -210,41 +210,26 @@ public class VaultBook {
     }
     public static void allDeposits(ArrayList<Transactions> transactions) {
         System.out.println();
-        System.out.println("==================================== ALL DEPOSITS =======================================");
-        System.out.printf("%-12s | %-8s | %-25s | %-20s | %10s%n",
-                "DATE", "TIME", "DESCRIPTION", "VENDOR", "AMOUNT");
-        System.out.println("-----------------------------------------------------------------------------------------");
+        printTableHeader();
 
         for(Transactions t : transactions){
             if(t.getAmount() > 0){
-                System.out.printf("%-12s | %-8s | %-25s | %-20s | %10.2f%n",
-                        t.getDate(),
-                        t.getTime().toString().substring(0, 5),
-                        t.getDescription(),
-                        t.getVendor(),
-                        t.getAmount());
+                printTransactions(t);
             }
         }
-        System.out.println("-----------------------------------------------------------------------------------------");
+        printTableFooter();
     }
     public static void allPayments(ArrayList<Transactions> transactions) {
         System.out.println();
         System.out.println("==================================== ALL PAYMENTS =======================================");
-        System.out.printf("%-12s | %-8s | %-25s | %-20s | %10s%n",
-                "DATE", "TIME", "DESCRIPTION", "VENDOR", "AMOUNT");
-        System.out.println("-----------------------------------------------------------------------------------------");
+        printTableHeader();
 
         for(Transactions t : transactions){
             if(t.getAmount() < 0){
-                System.out.printf("%-12s | %-8s | %-25s | %-20s | %10.2f%n",
-                        t.getDate(),
-                        t.getTime().toString().substring(0, 5),
-                        t.getDescription(),
-                        t.getVendor(),
-                        t.getAmount());
+                printTransactions(t);
             }
         }
-        System.out.println("-----------------------------------------------------------------------------------------");
+        printTableFooter();
     }
     public static void reports(Scanner keyboard, ArrayList<Transactions> transactions) {
         reportsMenu();
@@ -321,9 +306,24 @@ public class VaultBook {
         System.out.println("This is a test");
     }
 
+    public static void printTableHeader(){
+        System.out.printf("%-12s | %-8s | %-25s | %-20s | %10s%n",
+                "DATE", "TIME", "DESCRIPTION", "VENDOR", "AMOUNT");
+        System.out.println("-----------------------------------------------------------------------------------------");
+    }
 
+    public static void printTableFooter(){
+        System.out.println("-----------------------------------------------------------------------------------------");
+    }
 
-
+    public static void printTransactions(Transactions t){
+        System.out.printf("%-12s | %-8s | %-25s | %-20s | %10.2f%n",
+                t.getDate(),
+                t.getTime().toString().substring(0, 5),
+                t.getDescription(),
+                t.getVendor(),
+                t.getAmount());
+    }
 
 
     public static void exit(Scanner keyboard) {
