@@ -271,9 +271,15 @@ public class VaultBook {
                      searchByVendor();
                      break;
                 case 6:
-
-
-
+                    System.out.println("Returning to Ledger...");
+                    ledgerMenu();
+                    return;
+                case 7:
+                    System.out.println("Returning to Home Screen...");
+                    homeScreen();
+                    return;
+                    default:
+                    System.out.println("Invalid option. Try again.");
 
             }
         };
@@ -295,15 +301,25 @@ public class VaultBook {
             """);
     }
 
-    public static void monthToDate(){}
+    public static void monthToDate(){
+        System.out.println("This is a test");
+    }
 
-    public static void previousMonth(){}
+    public static void previousMonth(){
+        System.out.println("This is a test");
+    }
 
-    public static void yearToDate(){}
+    public static void yearToDate(){
+        System.out.println("This is a test");
+    }
 
-    public static void previousYear(){}
+    public static void previousYear(){
+        System.out.println("This is a test");
+    }
 
-    public static void searchByVendor(){}
+    public static void searchByVendor(){
+        System.out.println("This is a test");
+    }
 
 
 
