@@ -532,7 +532,7 @@ public class VaultBook {
         String filePath = "src/main/resources/transactions.csv";
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
+            String line = reader.readLine();
             while ((line = reader.readLine()) != null) {
                 if (!line.isBlank()) {
                     String[] parts = line.split("\\|");
