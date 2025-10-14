@@ -207,6 +207,7 @@ public class VaultBook {
     }
 
     public static void viewAllTransactions(ArrayList<Transactions> transactions) {
+        sortNewest(transactions);
         System.out.println();
         System.out.println("==================================== ALL TRANSACTIONS ====================================");
         printTableHeader();
@@ -248,8 +249,6 @@ public class VaultBook {
 
     public static void reports(Scanner keyboard, ArrayList<Transactions> transactions) {
         boolean running = true;
-
-
 
         while(running){
             reportsMenu();
@@ -320,6 +319,7 @@ public class VaultBook {
         System.out.println();
         System.out.println("==================================== Month to Date =======================================");
         printTableHeader();
+
         for(Transactions t : transactions){
             date = t.getDate();
             if (date.getMonthValue() == currentMonth && date.getYear() == currentYear){
@@ -452,7 +452,6 @@ public class VaultBook {
             }
         }
     }
-
 
 
     public static void printTransactions(Transactions t){
