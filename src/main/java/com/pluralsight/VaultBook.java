@@ -154,9 +154,8 @@ public class VaultBook {
     //------------------------------------ LEDGER
 
     public static void ledger(Scanner keyboard,ArrayList<Transactions> transactions) {
-        boolean backToHomeScreen = false;
 
-        while (!backToHomeScreen) {
+        while (true) {
             ledgerMenu();
             System.out.print("Please enter your option: ");
             int option = keyboard.nextInt();
@@ -177,20 +176,13 @@ public class VaultBook {
                     break;
                 case 5:
                     System.out.println("Returning to Home Screen...");
-                    backToHomeScreen = true;
-                    break;
+                    return;
                 default:
                     System.out.println("Invalid option. Try again.");
             }
-            if (!backToHomeScreen) {
-                System.out.println();
-                System.out.println("Press ENTER to continue...");
-                keyboard.nextLine();
+            waitForEnter(keyboard);
             }
-
         }
-
-    }
 
     private static void ledgerMenu() {
         System.out.println("""
@@ -248,9 +240,8 @@ public class VaultBook {
     // ------------------- REPORTS
 
     public static void reports(Scanner keyboard, ArrayList<Transactions> transactions) {
-        boolean running = true;
 
-        while(running){
+        while(true){
             reportsMenu();
             System.out.print("Please enter your option: ");
             int choice = keyboard.nextInt();
@@ -275,7 +266,6 @@ public class VaultBook {
                 case 6:
                     System.out.println("Returning to Ledger...");
                     ledgerMenu();
-                    running = false;
                     return;
                 case 7:
                     System.out.println("Returning to Home Screen...");
@@ -287,13 +277,9 @@ public class VaultBook {
                     break;
 
             }
-            if (running){
-                System.out.println();
-                System.out.println("Press ENTER to continue...");
-                keyboard.nextLine();
+            waitForEnter(keyboard);
             }
         }
-    }
 
     public static void reportsMenu(){
         System.out.print("""
@@ -327,14 +313,15 @@ public class VaultBook {
             }
         }
         printTableFooter();
+        saveToFile(keyboard, transactions);
         naviAfterReports(keyboard,transactions);
     }
 
     public static void previousMonth(Scanner keyboard,ArrayList<Transactions> transactions){
         LocalDate date = LocalDate.now();
         LocalDate lastMonth = date.minusMonths(1);
-        int previousMonth = date.getMonthValue();
-        int previousYear = date.getYear();
+        int previousMonth = lastMonth.getMonthValue();
+        int previousYear = lastMonth.getYear();
 
         System.out.println();
         System.out.println("==================================== Previous Month =======================================");
@@ -346,6 +333,7 @@ public class VaultBook {
             }
         }
         printTableFooter();
+        saveToFile(keyboard, transactions);
         naviAfterReports(keyboard, transactions);
     }
 
@@ -361,10 +349,10 @@ public class VaultBook {
             if (date.getYear() == currentYear){
                 printTransactions(t);
             }
-            printTableFooter();
-            naviAfterReports(keyboard, transactions);
         }
-
+        printTableFooter();
+        saveToFile(keyboard, transactions);
+        naviAfterReports(keyboard, transactions);
     }
 
     public static void previousYear(Scanner keyboard, ArrayList<Transactions> transactions){
@@ -387,16 +375,43 @@ public class VaultBook {
             System.out.println("There is no transaction with that year.");
         }
         printTableFooter();
+        saveToFile(keyboard, transactions);
         naviAfterReports(keyboard, transactions);
     }
 
     public static void searchByVendor(Scanner keyboard, ArrayList<Transactions> transactions){
-        System.out.println("This is a test");
+        System.out.print("Enter vendor name to search: ");
+        String vendorName = keyboard.nextLine().trim().toLowerCase();
+
+        System.out.println();
+        System.out.println("==================================== SEARCH RESULTS =======================================");
+        printTableHeader();
+
+        boolean found = false;
+        for (Transactions t : transactions) {
+            if (t.getVendor().toLowerCase().contains(vendorName)) {
+                printTransactions(t);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("There is no transaction with that vendor.");
+        }
+
+        printTableFooter();
+        saveToFile(keyboard, transactions);
+        naviAfterReports(keyboard, transactions);
     }
 
 
 
     //------------------------------------Helper Methods
+
+    public static void waitForEnter(Scanner keyboard){
+        System.out.println("\nPress ENTER to continue...");
+        keyboard.nextLine();
+    }
 
     public static void printTableHeader(){
         System.out.printf("%-12s | %-8s | %-25s | %-20s | %10s%n",
@@ -450,6 +465,29 @@ public class VaultBook {
                 }
 
             }
+        }
+    }
+    public static void saveToFile(Scanner keyboard, ArrayList<Transactions> transactions){
+        System.out.print("Do you want to save this report? (Yes/Y or No/N): ");
+        String save = keyboard.nextLine().trim().toUpperCase();
+
+        if (save.equals("YES") || save.equals("Y")) {
+            System.out.print("Enter the file name to save as: ");
+            String fileName = keyboard.nextLine().trim();
+
+            try (FileWriter fileSaver = new FileWriter("src/main/resources/" + fileName + ".txt")) {
+                for (Transactions t : transactions) {
+                    fileSaver.write(t.toString() + "\n");
+                }
+                System.out.println("File saved successfully as " + fileName + ".txt");
+            } catch (IOException e) {
+                System.out.println("Error saving file!");
+                e.printStackTrace();
+            }
+        } else if (save.equals("NO") || save.equals("N")) {
+            System.out.println("File not saved.");
+        } else {
+            System.out.println("Invalid input. File not saved.");
         }
     }
 
