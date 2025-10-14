@@ -231,6 +231,8 @@ public class VaultBook {
         }
         printTableFooter();
     }
+
+    // ------------------- REPORTS -------------------
     public static void reports(Scanner keyboard, ArrayList<Transactions> transactions) {
         reportsMenu();
         boolean running = true;
@@ -241,33 +243,39 @@ public class VaultBook {
         while(running){
             switch (choice){
                 case 1:
-                     monthToDate();
+                     monthToDate(transactions);
                      break;
                 case 2:
-                     previousMonth();
+                     previousMonth(transactions);
                      break;
                 case 3:
-                     yearToDate();
+                     yearToDate(transactions);
                      break;
                 case 4:
-                     previousYear();
+                     previousYear(transactions);
                      break;
                 case 5:
-                     searchByVendor();
+                     searchByVendor(transactions);
                      break;
                 case 6:
                     System.out.println("Returning to Ledger...");
                     ledgerMenu();
+                    running = false;
                     return;
                 case 7:
                     System.out.println("Returning to Home Screen...");
                     homeScreen();
+                    running = false;
                     return;
                     default:
                     System.out.println("Invalid option. Try again.");
+                    break;
 
             }
-        };
+            System.out.println();
+            System.out.print("Press ENTER to continue...");
+            keyboard.nextLine();
+        }
     }
 
     public static void reportsMenu(){
@@ -286,23 +294,36 @@ public class VaultBook {
             """);
     }
 
-    public static void monthToDate(){
+    public static void monthToDate(ArrayList<Transactions> transactions){
+        LocalDate date = LocalDate.now();
+        int currentMonth = date.getMonthValue();
+        int currentYear = date.getYear();
+
+        System.out.println();
+        System.out.println("================================ Month to Date ===================================");
+        printTableHeader();
+        for(Transactions t : transactions){
+            date = t.getDate();
+            if (date.getMonthValue() == currentMonth && date.getYear() == currentYear){
+                printTransactions(t);
+            }
+        }
+        printTableFooter();
+    }
+
+    public static void previousMonth(ArrayList<Transactions> transactions){
         System.out.println("This is a test");
     }
 
-    public static void previousMonth(){
+    public static void yearToDate(ArrayList<Transactions> transactions){
         System.out.println("This is a test");
     }
 
-    public static void yearToDate(){
+    public static void previousYear(ArrayList<Transactions> transactions){
         System.out.println("This is a test");
     }
 
-    public static void previousYear(){
-        System.out.println("This is a test");
-    }
-
-    public static void searchByVendor(){
+    public static void searchByVendor(ArrayList<Transactions> transactions){
         System.out.println("This is a test");
     }
 
