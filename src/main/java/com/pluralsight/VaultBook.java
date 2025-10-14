@@ -418,13 +418,9 @@ public class VaultBook {
 
     //------------------------------------Helper Methods
 
-    public static void waitForEnter(Scanner keyboard){
-        System.out.println("\nPress ENTER to continue...");
-        keyboard.nextLine();
-    }
 
     public static void printTableHeader(){
-        System.out.printf("%-12s | %-8s | %-25s | %-20s | %10.2f%n",
+        System.out.printf("%-12s | %-8s | %-25s | %-20s | %10s%n",
                 "DATE", "TIME", "DESCRIPTION", "VENDOR", "AMOUNT");
         System.out.println("-----------------------------------------------------------------------------------------");
     }
