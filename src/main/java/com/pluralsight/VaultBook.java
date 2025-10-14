@@ -1,7 +1,6 @@
 package com.pluralsight;
 
 
-import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -152,6 +151,8 @@ public class VaultBook {
         System.out.printf("Your current total balance is: $%.2f%n", balance);
     }
 
+    //------------------------------------ LEDGER
+
     public static void ledger(Scanner keyboard,ArrayList<Transactions> transactions) {
         boolean backToHomeScreen = false;
 
@@ -206,7 +207,18 @@ public class VaultBook {
     }
 
     public static void viewAllTransactions(ArrayList<Transactions> transactions) {
-        System.out.println("this is my testing");
+        System.out.println();
+        System.out.println("==================================== ALL TRANSACTIONS ====================================");
+        printTableHeader();
+
+        if(transactions.isEmpty()) {
+            System.out.println("There are no transactions in the system.");
+        } else {
+            for (Transactions t : transactions) {
+                printTransactions(t);
+            }
+        }
+        printTableFooter();
     }
     public static void allDeposits(ArrayList<Transactions> transactions) {
         System.out.println();
@@ -232,7 +244,8 @@ public class VaultBook {
         printTableFooter();
     }
 
-    // ------------------- REPORTS -------------------
+    // ------------------- REPORTS
+
     public static void reports(Scanner keyboard, ArrayList<Transactions> transactions) {
         reportsMenu();
         boolean running = true;
@@ -243,19 +256,19 @@ public class VaultBook {
         while(running){
             switch (choice){
                 case 1:
-                     monthToDate(transactions);
+                     monthToDate(keyboard,transactions);
                      break;
                 case 2:
-                     previousMonth(transactions);
+                     previousMonth(keyboard,transactions);
                      break;
                 case 3:
-                     yearToDate(transactions);
+                     yearToDate(keyboard,transactions);
                      break;
                 case 4:
-                     previousYear(transactions);
+                     previousYear(keyboard,transactions);
                      break;
                 case 5:
-                     searchByVendor(transactions);
+                     searchByVendor(keyboard,transactions);
                      break;
                 case 6:
                     System.out.println("Returning to Ledger...");
@@ -272,9 +285,6 @@ public class VaultBook {
                     break;
 
             }
-            System.out.println();
-            System.out.print("Press ENTER to continue...");
-            keyboard.nextLine();
         }
     }
 
@@ -294,13 +304,13 @@ public class VaultBook {
             """);
     }
 
-    public static void monthToDate(ArrayList<Transactions> transactions){
+    public static void monthToDate(Scanner keyboard,ArrayList<Transactions> transactions){
         LocalDate date = LocalDate.now();
         int currentMonth = date.getMonthValue();
         int currentYear = date.getYear();
 
         System.out.println();
-        System.out.println("================================ Month to Date ===================================");
+        System.out.println("==================================== Month to Date =======================================");
         printTableHeader();
         for(Transactions t : transactions){
             date = t.getDate();
@@ -309,23 +319,43 @@ public class VaultBook {
             }
         }
         printTableFooter();
+        naviAfterReports(keyboard,transactions);
     }
 
-    public static void previousMonth(ArrayList<Transactions> transactions){
+    public static void previousMonth(Scanner keyboard,ArrayList<Transactions> transactions){
+        LocalDate date = LocalDate.now();
+        LocalDate lastMonth = date.minusMonths(1);
+        int previousMonth = date.getMonthValue();
+        int previousYear = date.getYear();
+
+        System.out.println();
+        System.out.println("==================================== Previous Month =======================================");
+        printTableHeader();
+        for (Transactions t : transactions){
+            date = t.getDate();
+            if (date.getMonthValue() == previousMonth && date.getYear() == previousYear){
+                printTransactions(t);
+            }
+        }
+        printTableFooter();
+        naviAfterReports(keyboard, transactions);
+    }
+
+    public static void yearToDate(Scanner keyboard,ArrayList<Transactions> transactions){
         System.out.println("This is a test");
     }
 
-    public static void yearToDate(ArrayList<Transactions> transactions){
+    public static void previousYear(Scanner keyboard, ArrayList<Transactions> transactions){
         System.out.println("This is a test");
     }
 
-    public static void previousYear(ArrayList<Transactions> transactions){
+    public static void searchByVendor(Scanner keyboard, ArrayList<Transactions> transactions){
         System.out.println("This is a test");
     }
 
-    public static void searchByVendor(ArrayList<Transactions> transactions){
-        System.out.println("This is a test");
-    }
+
+
+    //------------------------------------Helper Methods
 
     public static void printTableHeader(){
         System.out.printf("%-12s | %-8s | %-25s | %-20s | %10s%n",
@@ -336,6 +366,30 @@ public class VaultBook {
     public static void printTableFooter(){
         System.out.println("-----------------------------------------------------------------------------------------");
     }
+
+    public static void naviAfterReports(Scanner keyboard, ArrayList<Transactions> transactions){
+        System.out.println();
+        System.out.println("--------------------------------------------");
+        System.out.print("Press [H] to return Home or [R] to return to Reports: ");
+        char navChoice = Character.toUpperCase(keyboard.nextLine().charAt(0));
+        keyboard.nextLine();
+
+        switch (navChoice){
+            case 'H':
+                homeScreen();
+                break;
+            case 'R':
+                reports(keyboard, transactions);
+                break;
+                default:
+                    System.out.println("Invalid option. Returning to Reports by default...");
+                    reports(keyboard, transactions);
+                    break;
+
+
+        }
+    }
+
 
     public static void printTransactions(Transactions t){
         System.out.printf("%-12s | %-8s | %-25s | %-20s | %10.2f%n",
