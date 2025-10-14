@@ -41,11 +41,11 @@ public class VaultBook {
         ====================================
                      HOME MENU              
         ====================================
-        |  1  | Add Deposit                |
-        |  2  | Make Payment               |
-        |  3  | Show Balance               |
-        |  4  | Ledger                     |
-        |  5  | Exit                       |
+        |  D  | Add Deposit                |
+        |  P  | Make Payment               |
+        |  B  | Show Balance               |
+        |  L  | Ledger                     |
+        |  X  | Exit                       |
         ====================================
         """);
     }
@@ -53,23 +53,22 @@ public class VaultBook {
     public static void menuSelector(Scanner keyboard, ArrayList<Transactions> transactions) {
         System.out.println();
         System.out.print("Please choose your option: ");
-        int choice = keyboard.nextInt();
-        keyboard.nextLine();
+        String choice = keyboard.nextLine();
 
         switch (choice) {
-            case 1:
+            case "D":
                 addDeposit(keyboard, transactions);
                 break;
-            case 2:
+            case "P":
                 makePayment(keyboard, transactions);
                 break;
-            case 3:
+            case "B":
                 showBalance(transactions);
                 break;
-            case 4:
+            case "L":
                 ledger(keyboard, transactions);
                 break;
-            case 5:
+            case "X":
                 exit(keyboard);
                 break;
             default:
@@ -155,23 +154,23 @@ public class VaultBook {
         while (true) {
             ledgerMenu();
             System.out.print("Please enter your option: ");
-            int option = keyboard.nextInt();
+            String option = keyboard.nextLine();
             keyboard.nextLine();
 
             switch (option) {
-                case 1:
+                case "A":
                     viewAllTransactions(transactions);
                     break;
-                case 2:
+                case "D":
                     allDeposits(transactions);
                     break;
-                case 3:
+                case "P":
                     allPayments(transactions);
                     break;
-                case 4:
+                case "R":
                     reports(keyboard, transactions);
                     break;
-                case 5:
+                case "H":
                     System.out.println("Returning to Home Screen...");
                     while (true) {
                         homeScreen();
@@ -188,11 +187,11 @@ public class VaultBook {
         ====================================
                   LEDGER SYSTEM            
         ====================================
-        |  1  | Display All Transactions  |
-        |  2  | View All Deposits         |
-        |  3  | View All Payments         |
-        |  4  | Reports                   |
-        |  5  | Return to Home Screen     |
+        |  A  | Display All Transactions  |
+        |  D  | View All Deposits         |
+        |  P  | View All Payments         |
+        |  R  | Reports                   |
+        |  H  | Return to Home Screen     |
         ====================================
         """);
     }
@@ -243,35 +242,33 @@ public class VaultBook {
         while(true){
             reportsMenu();
             System.out.print("Please enter your option: ");
-            int choice = keyboard.nextInt();
-            keyboard.nextLine();
+            String choice = keyboard.nextLine().trim().toUpperCase();
 
             switch (choice){
-                case 1:
+                case "1":
                      monthToDate(keyboard,transactions);
                      break;
-                case 2:
+                case "2":
                      previousMonth(keyboard,transactions);
                      break;
-                case 3:
+                case "3":
                      yearToDate(keyboard,transactions);
                      break;
-                case 4:
+                case "4":
                      previousYear(keyboard,transactions);
                      break;
-                case 5:
+                case "5":
                      searchByVendor(keyboard,transactions);
                      break;
-                case 6:
+                case "0":
                     System.out.println("Returning to Ledger...");
                     return;
-                case 7:
+                case "H":
                     System.out.println("Returning to Home Screen...");
                     while (true) {
                         homeScreen();
                         menuSelector(keyboard, transactions);
                     }
-
                     default:
                     System.out.println("Invalid option. Try again.");
                     break;
@@ -290,8 +287,8 @@ public class VaultBook {
             |  3  | Year to Date               |
             |  4  | Previous Year              |
             |  5  | Search by Vendor           |
-            |  6  | Back to Ledger             |
-            |  7  | Back to Home               |
+            |  0  | Back to Ledger             |
+            |  H  | Back to Home               |
             ====================================
             """);
     }
