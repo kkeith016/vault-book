@@ -154,8 +154,7 @@ public class VaultBook {
         while (true) {
             ledgerMenu();
             System.out.print("Please enter your option: ");
-            String option = keyboard.nextLine();
-            keyboard.nextLine();
+            String option = keyboard.nextLine().trim().toUpperCase();
 
             switch (option) {
                 case "A":
@@ -331,6 +330,7 @@ public class VaultBook {
             date = t.getDate();
             if (date.getMonthValue() == previousMonth && date.getYear() == previousYear){
                 printTransactions(t);
+                reportTransactions.add(t);
             }
         }
         printTableFooter();
@@ -351,6 +351,7 @@ public class VaultBook {
             date = t.getDate();
             if (date.getYear() == currentYear){
                 printTransactions(t);
+                reportTransactions.add(t);
             }
         }
         printTableFooter();
@@ -373,6 +374,7 @@ public class VaultBook {
             LocalDate transactionDate = t.getDate();
             if (transactionDate.getYear() == previousYear){
                 printTransactions(t);
+                reportTransactions.add(t);
                 found = true;
             }
         }
@@ -397,6 +399,7 @@ public class VaultBook {
         for (Transactions t : transactions) {
             if (t.getVendor().toLowerCase().contains(vendorName)) {
                 printTransactions(t);
+                reportTransactions.add(t);
                 found = true;
             }
         }
@@ -421,7 +424,7 @@ public class VaultBook {
     }
 
     public static void printTableHeader(){
-        System.out.printf("%-12s | %-8s | %-25s | %-20s | %10s%n",
+        System.out.printf("%-12s | %-8s | %-25s | %-20s | %10.2f%n",
                 "DATE", "TIME", "DESCRIPTION", "VENDOR", "AMOUNT");
         System.out.println("-----------------------------------------------------------------------------------------");
     }
@@ -438,15 +441,13 @@ public class VaultBook {
             String choice = keyboard.nextLine().trim().toUpperCase();
 
             if (choice.equals("H")) {
-                // Go back to Home Menu properly
                 while (true) {
                     homeScreen();
                     menuSelector(keyboard, transactions);
                 }
             } else if (choice.equals("R")) {
-                // Go directly back to reports menu
                 reports(keyboard, transactions);
-                return; // after finishing reports, return to previous menu
+                return;
             } else {
                 System.out.println("Invalid choice. Please try again.");
             }
@@ -476,7 +477,7 @@ public class VaultBook {
         }
     }
     public static void saveToFile(Scanner keyboard, ArrayList<Transactions> transactionsToSave,String reportTitle){
-        System.out.print("Do you want to save this report? (Yes/Y or No/N): ");
+        System.out.print("Do you want to save this report? (Y/N): ");
         String save = keyboard.nextLine().trim().toUpperCase();
 
         if (save.equals("YES") || save.equals("Y")) {
@@ -533,7 +534,7 @@ public class VaultBook {
         String filePath = "src/main/resources/transactions.csv";
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line = reader.readLine();
+            String line;
             while ((line = reader.readLine()) != null) {
                 if (!line.isBlank()) {
                     String[] parts = line.split("\\|");
