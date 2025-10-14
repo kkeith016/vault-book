@@ -247,13 +247,16 @@ public class VaultBook {
     // ------------------- REPORTS
 
     public static void reports(Scanner keyboard, ArrayList<Transactions> transactions) {
-        reportsMenu();
         boolean running = true;
-        System.out.print("Please enter your option: ");
-        int choice = keyboard.nextInt();
-        keyboard.nextLine();
+
+
 
         while(running){
+            reportsMenu();
+            System.out.print("Please enter your option: ");
+            int choice = keyboard.nextInt();
+            keyboard.nextLine();
+
             switch (choice){
                 case 1:
                      monthToDate(keyboard,transactions);
@@ -278,12 +281,17 @@ public class VaultBook {
                 case 7:
                     System.out.println("Returning to Home Screen...");
                     homeScreen();
-                    running = false;
                     return;
+
                     default:
                     System.out.println("Invalid option. Try again.");
                     break;
 
+            }
+            if (running){
+                System.out.println();
+                System.out.println("Press ENTER to continue...");
+                keyboard.nextLine();
             }
         }
     }
@@ -342,11 +350,44 @@ public class VaultBook {
     }
 
     public static void yearToDate(Scanner keyboard,ArrayList<Transactions> transactions){
-        System.out.println("This is a test");
+        LocalDate date = LocalDate.now();
+        int currentYear = date.getYear();
+
+        System.out.println();
+        System.out.println("==================================== Year to Date =======================================");
+        printTableHeader();
+        for (Transactions t : transactions){
+            date = t.getDate();
+            if (date.getYear() == currentYear){
+                printTransactions(t);
+            }
+            printTableFooter();
+            naviAfterReports(keyboard, transactions);
+        }
+
     }
 
     public static void previousYear(Scanner keyboard, ArrayList<Transactions> transactions){
-        System.out.println("This is a test");
+        LocalDate date = LocalDate.now();
+        int currentYear = date.getYear();
+        int previousYear = currentYear - 1;
+        System.out.println();
+        System.out.println("==================================== Previous Year =======================================");
+        printTableHeader();
+
+        boolean found = false;
+        for (Transactions t : transactions){
+            LocalDate transactionDate = t.getDate();
+            if (transactionDate.getYear() == previousYear){
+                printTransactions(t);
+                found = true;
+            }
+        }
+        if (!found){
+            System.out.println("There is no transaction with that year.");
+        }
+        printTableFooter();
+        naviAfterReports(keyboard, transactions);
     }
 
     public static void searchByVendor(Scanner keyboard, ArrayList<Transactions> transactions){
@@ -372,7 +413,6 @@ public class VaultBook {
         System.out.println("--------------------------------------------");
         System.out.print("Press [H] to return Home or [R] to return to Reports: ");
         char navChoice = Character.toUpperCase(keyboard.nextLine().charAt(0));
-        keyboard.nextLine();
 
         switch (navChoice){
             case 'H':
@@ -389,6 +429,30 @@ public class VaultBook {
 
         }
     }
+    public static void sortNewest(ArrayList<Transactions> transactions){
+        for (int i = 0; i < transactions.size(); i++) {
+            for (int j = i + 1; j < transactions.size(); j++) {
+                Transactions t1 = transactions.get(i);
+                Transactions t2 = transactions.get(j);
+
+                // Compare dates first
+                if (t1.getDate().isBefore(t2.getDate())) {
+                    // Swap t1 and t2
+                    transactions.set(i, t2);
+                    transactions.set(j, t1);
+                }
+                // If dates are the same, compare times
+                else if (t1.getDate().isEqual(t2.getDate())) {
+                    if (t1.getTime().isBefore(t2.getTime())) {
+                        transactions.set(i, t2);
+                        transactions.set(j, t1);
+                    }
+                }
+
+            }
+        }
+    }
+
 
 
     public static void printTransactions(Transactions t){
