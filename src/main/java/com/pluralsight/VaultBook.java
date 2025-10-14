@@ -104,7 +104,7 @@ public class VaultBook {
         transactions.add(deposit);
         appendTransaction(deposit);
 
-        System.out.println("Deposit added successfully.");
+        System.out.println("Transaction saved successfully!");
     }
 
     public static void makePayment(Scanner keyboard, ArrayList<Transactions> transactions) {
@@ -139,7 +139,7 @@ public class VaultBook {
         transactions.add(payment);
         appendTransaction(payment);
 
-        System.out.println("Payment added successfully.");
+        System.out.println("Payment made successfully!");
     }
 
     public static void showBalance(ArrayList<Transactions> transactions) {
@@ -197,6 +197,7 @@ public class VaultBook {
 
     public static void viewAllTransactions(ArrayList<Transactions> transactions) {
         sortNewest(transactions);
+
         System.out.println();
         System.out.println("==================================== ALL TRANSACTIONS ====================================");
         printTableHeader();
@@ -212,6 +213,7 @@ public class VaultBook {
     }
     public static void allDeposits(ArrayList<Transactions> transactions) {
         System.out.println();
+        System.out.println("==================================== ALL DEPOSITS ====================================");
         printTableHeader();
 
         for(Transactions t : transactions){
@@ -521,7 +523,7 @@ public class VaultBook {
 
     public static void exit(Scanner keyboard) {
         keyboard.close();
-        System.out.println("Exiting Vault Book. Have a nice day!");
+        System.out.println("Thank you for using Vault Book!");
         System.exit(0);
     }
 
