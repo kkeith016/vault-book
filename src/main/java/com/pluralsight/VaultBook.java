@@ -35,6 +35,9 @@ public class VaultBook {
             menuSelector(keyboard, transactions);
         }
     }
+    // ===============================
+    //  Home Menu and Menu Selector
+    // ===============================
 
     public static void homeScreen() {
         System.out.println("""
@@ -53,7 +56,7 @@ public class VaultBook {
     public static void menuSelector(Scanner keyboard, ArrayList<Transactions> transactions) {
         System.out.println();
         System.out.print("Please choose your option: ");
-        String choice = keyboard.nextLine();
+        String choice = keyboard.nextLine().trim().toUpperCase();
 
         switch (choice) {
             case "D":
@@ -76,6 +79,15 @@ public class VaultBook {
                 break;
         }
     }
+
+    // ============================================================
+    //                    Home Screen Methods
+    // ------------------------------------------------------------
+    // Manages main menu options and user input, including:
+    // - Adding deposits and payments
+    // - Accessing the Ledger screen
+    // - Exiting the application
+    // ============================================================
 
     public static void addDeposit(Scanner keyboard, ArrayList<Transactions> transactions) {
         LocalDate date = LocalDate.now();
@@ -128,7 +140,7 @@ public class VaultBook {
             }
         }
 
-        amount = -amount; // store as negative
+        amount = -amount;
         System.out.print("Enter description: ");
         String description = keyboard.nextLine();
         System.out.print("Enter vendor: ");
@@ -147,7 +159,9 @@ public class VaultBook {
         System.out.printf("Your current total balance is: $%.2f%n", balance);
     }
 
-    //------------------------------------ LEDGER
+    // ===============================
+    //         Ledger & Menu
+    // ===============================
 
     public static void ledger(Scanner keyboard,ArrayList<Transactions> transactions) {
 
@@ -194,6 +208,15 @@ public class VaultBook {
         ====================================
         """);
     }
+// ============================================================
+//                      Ledger Methods
+// ------------------------------------------------------------
+// Responsible for ledger display and management, including:
+// - Viewing all transactions (newest first)
+// - Filtering deposits and payments
+// - Navigating to the Reports screen
+// - Returning to the Home screen
+// ============================================================
 
     public static void viewAllTransactions(ArrayList<Transactions> transactions) {
         sortNewest(transactions);
@@ -236,7 +259,9 @@ public class VaultBook {
         printTableFooter();
     }
 
-    // ------------------- REPORTS
+    // ===============================
+    //         Reports & Menu
+    // ===============================
 
     public static void reports(Scanner keyboard, ArrayList<Transactions> transactions) {
 
@@ -293,6 +318,16 @@ public class VaultBook {
             ====================================
             """);
     }
+
+    // ============================================================
+    //                      Reports Methods
+    // ------------------------------------------------------------
+    // Handles all reporting features, including:
+    // - Month-to-Date, Previous Month, and Year-to-Date reports
+    // - Previous Year report
+    // - Vendor search functionality
+    // - (Optional) Custom search filters for date, vendor, and amount
+    // ============================================================
 
     public static void monthToDate(Scanner keyboard,ArrayList<Transactions> transactions){
         LocalDate date = LocalDate.now();
@@ -365,11 +400,12 @@ public class VaultBook {
         LocalDate date = LocalDate.now();
         int currentYear = date.getYear();
         int previousYear = currentYear - 1;
+
         System.out.println();
         System.out.println("==================================== Previous Year =======================================");
         printTableHeader();
-        ArrayList<Transactions> reportTransactions = new ArrayList<>();
 
+        ArrayList<Transactions> reportTransactions = new ArrayList<>();
 
         boolean found = false;
         for (Transactions t : transactions){
@@ -416,9 +452,17 @@ public class VaultBook {
 
     }
 
-
-
-    //------------------------------------Helper Methods
+// ============================================================
+//                     Helper Methods
+// ------------------------------------------------------------
+// Includes:
+// - Header and footer display
+// - Navigation and sorting functions
+// - Transaction printing and saving
+// - File loading and appending
+// - Balance calculation
+// - Exit handling
+// ============================================================
 
 
     public static void printTableHeader(){
@@ -529,9 +573,7 @@ public class VaultBook {
 
 
     public static void loadTransactions(ArrayList<Transactions> transactions) {
-        String filePath = "src/main/resources/transactions.csv";
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"))) {
             String line = reader.readLine();
             while ((line = reader.readLine()) != null) {
                 if (!line.isBlank()) {
@@ -551,8 +593,7 @@ public class VaultBook {
     }
 
     public static void appendTransaction(Transactions t) {
-        String filePath = "src/main/resources/transactions.csv";
-        try (FileWriter writer = new FileWriter(filePath, true)) {
+        try (FileWriter writer = new FileWriter(("src/main/resources/transactions.csv"), true)) {
             writer.write(t.toString() + "\n");
         } catch (IOException e) {
             System.out.println("Error saving transaction!");
