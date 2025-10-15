@@ -185,11 +185,9 @@ public class VaultBook {
                     break;
                 case "H":
                     System.out.println("Returning to Home Screen...");
-                    while (true) {
-                        homeScreen();
-                        menuSelector(keyboard, transactions);
-                    }
-                default:
+                    return;
+
+                    default:
                     System.out.println("Invalid option. Try again.");
             }
             }
@@ -291,10 +289,8 @@ public class VaultBook {
                     return;
                 case "H":
                     System.out.println("Returning to Home Screen...");
-                    while (true) {
-                        homeScreen();
-                        menuSelector(keyboard, transactions);
-                    }
+                    return;
+
                     default:
                     System.out.println("Invalid option. Try again.");
                     break;
@@ -302,6 +298,7 @@ public class VaultBook {
             }
             }
         }
+
 
     public static void reportsMenu(){
         System.out.print("""
@@ -483,10 +480,7 @@ public class VaultBook {
             String choice = keyboard.nextLine().trim().toUpperCase();
 
             if (choice.equals("H")) {
-                while (true) {
-                    homeScreen();
-                    menuSelector(keyboard, transactions);
-                }
+                return;
             } else if (choice.equals("R")) {
                 reports(keyboard, transactions);
                 return;
@@ -573,24 +567,35 @@ public class VaultBook {
 
 
     public static void loadTransactions(ArrayList<Transactions> transactions) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"))) {
-            String line = reader.readLine();
-            while ((line = reader.readLine()) != null) {
-                if (!line.isBlank()) {
-                    String[] parts = line.split("\\|");
-                    LocalDate date = LocalDate.parse(parts[0]);
-                    LocalTime time = LocalTime.parse(parts[1]);
-                    String description = parts[2];
-                    String vendor = parts[3];
-                    double amount = Double.parseDouble(parts[4]);
+            try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"))) {
+                String line;
+                line = reader.readLine();
 
-                    transactions.add(new Transactions(date, time, description, amount, vendor));
+                while ((line = reader.readLine()) != null) {
+                    if (!line.isBlank()) {
+                        String[] parts = line.split("\\|");
+                        if (parts.length != 5) {
+                            System.out.println("Skipping malformed line: " + line);
+                            continue;
+                        }
+
+                        try {
+                            LocalDate date = LocalDate.parse(parts[0].trim());
+                            LocalTime time = LocalTime.parse(parts[1].trim());
+                            String description = parts[2].trim();
+                            String vendor = parts[3].trim();
+                            double amount = Double.parseDouble(parts[4].trim());
+
+                            transactions.add(new Transactions(date, time, description, amount, vendor));
+                        } catch (Exception e) {
+                            System.out.println("Skipping invalid line: " + line);
+                        }
+                    }
                 }
+            } catch (IOException e) {
+                System.out.println("CSV not found. Starting with empty ledger.");
             }
-        } catch (IOException e) {
-            System.out.println("CSV not found. Starting with empty ledger.");
         }
-    }
 
     public static void appendTransaction(Transactions t) {
         try (FileWriter writer = new FileWriter(("src/main/resources/transactions.csv"), true)) {
@@ -610,4 +615,3 @@ public class VaultBook {
 
     }
     }
-
