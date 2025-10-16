@@ -1,6 +1,7 @@
 package com.pluralsight;
 
 
+import java.sql.Savepoint;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class VaultBook {
 
         System.out.println("""
                 ==========================================
-                          WELCOME TO VAULT BOOK
+                               VAULT BOOK
                 ==========================================
                    Your trusted Accounting Ledger System
                    Secure. Simple. Smart.
@@ -54,7 +55,6 @@ public class VaultBook {
     }
 
     public static void menuSelector(Scanner keyboard, ArrayList<Transactions> transactions) {
-        System.out.println();
         System.out.print("Please choose your option: ");
         String choice = keyboard.nextLine().trim().toUpperCase();
 
@@ -117,6 +117,7 @@ public class VaultBook {
         appendTransaction(deposit);
 
         System.out.println("Transaction saved successfully!");
+        System.out.println();
     }
 
     public static void makePayment(Scanner keyboard, ArrayList<Transactions> transactions) {
@@ -152,11 +153,13 @@ public class VaultBook {
         appendTransaction(payment);
 
         System.out.println("Payment made successfully!");
+        System.out.println();
     }
 
     public static void showBalance(ArrayList<Transactions> transactions) {
         double balance = getTotalBalance(transactions);
         System.out.printf("Your current total balance is: $%.2f%n", balance);
+        System.out.println();
     }
 
     // ===============================
@@ -172,13 +175,13 @@ public class VaultBook {
 
             switch (option) {
                 case "A":
-                    viewAllTransactions(transactions);
+                    viewAllTransactions(transactions,keyboard);
                     break;
                 case "D":
-                    allDeposits(transactions);
+                    allDeposits(transactions,keyboard);
                     break;
                 case "P":
-                    allPayments(transactions);
+                    allPayments(transactions,keyboard);
                     break;
                 case "R":
                     reports(keyboard, transactions);
@@ -216,45 +219,54 @@ public class VaultBook {
 // - Returning to the Home screen
 // ============================================================
 
-    public static void viewAllTransactions(ArrayList<Transactions> transactions) {
+    public static void viewAllTransactions(ArrayList<Transactions> transactions,Scanner keyboard) {
         sortNewest(transactions);
 
         System.out.println();
         System.out.println("==================================== ALL TRANSACTIONS ====================================");
         printTableHeader();
+        ArrayList<Transactions> reportTransactions = new ArrayList<>();
 
         if(transactions.isEmpty()) {
             System.out.println("There are no transactions in the system.");
         } else {
             for (Transactions t : transactions) {
                 printTransactions(t);
+                reportTransactions.add(t);
             }
         }
         printTableFooter();
+        saveToFile(keyboard, reportTransactions,"ALL TRANSACTIONS");
     }
-    public static void allDeposits(ArrayList<Transactions> transactions) {
+    public static void allDeposits(ArrayList<Transactions> transactions,Scanner keyboard) {
         System.out.println();
         System.out.println("==================================== ALL DEPOSITS ====================================");
         printTableHeader();
+        ArrayList<Transactions> reportTransactions = new ArrayList<>();
 
         for(Transactions t : transactions){
             if(t.getAmount() > 0){
                 printTransactions(t);
+                reportTransactions.add(t);
             }
         }
         printTableFooter();
+        saveToFile(keyboard, reportTransactions,"All DEPOSITS");
     }
-    public static void allPayments(ArrayList<Transactions> transactions) {
+    public static void allPayments(ArrayList<Transactions> transactions,Scanner keyboard) {
         System.out.println();
         System.out.println("==================================== ALL PAYMENTS =======================================");
         printTableHeader();
+        ArrayList<Transactions> reportTransactions = new ArrayList<>();
 
         for(Transactions t : transactions){
             if(t.getAmount() < 0){
                 printTransactions(t);
+                reportTransactions.add(t);
             }
         }
         printTableFooter();
+        saveToFile(keyboard, reportTransactions,"All PAYMENTS");
     }
 
     // ===============================
@@ -265,6 +277,7 @@ public class VaultBook {
 
         while(true){
             reportsMenu();
+            System.out.println();
             System.out.print("Please enter your option: ");
             String choice = keyboard.nextLine().trim().toUpperCase();
 
@@ -286,13 +299,16 @@ public class VaultBook {
                      break;
                 case "0":
                     System.out.println("Returning to Ledger...");
+                    System.out.println();
                     return;
                 case "H":
                     System.out.println("Returning to Home Screen...");
+                    System.out.println();
                     return;
 
                     default:
                     System.out.println("Invalid option. Try again.");
+                        System.out.println();
                     break;
 
             }
@@ -345,7 +361,6 @@ public class VaultBook {
         }
         printTableFooter();
         saveToFile(keyboard, reportTransactions,"Month to Date");
-        naviAfterReports(keyboard,transactions);
     }
 
     public static void previousMonth(Scanner keyboard,ArrayList<Transactions> transactions){
@@ -368,7 +383,6 @@ public class VaultBook {
         }
         printTableFooter();
         saveToFile(keyboard, reportTransactions, "Previous Month");
-        naviAfterReports(keyboard, transactions);
     }
 
     public static void yearToDate(Scanner keyboard,ArrayList<Transactions> transactions){
@@ -389,7 +403,6 @@ public class VaultBook {
         }
         printTableFooter();
         saveToFile(keyboard, reportTransactions,"Year to Date");
-        naviAfterReports(keyboard, transactions);
     }
 
     public static void previousYear(Scanner keyboard, ArrayList<Transactions> transactions){
@@ -417,7 +430,6 @@ public class VaultBook {
         }
         printTableFooter();
         saveToFile(keyboard, reportTransactions,"Previous Year");
-        naviAfterReports(keyboard, transactions);
     }
 
     public static void searchByVendor(Scanner keyboard, ArrayList<Transactions> transactions) {
@@ -444,8 +456,6 @@ public class VaultBook {
 
         printTableFooter();
         saveToFile(keyboard, reportTransactions, "Vendor Report");
-        naviAfterReports(keyboard, transactions);
-
     }
 
 // ============================================================
@@ -471,25 +481,6 @@ public class VaultBook {
         System.out.println("-----------------------------------------------------------------------------------------");
     }
 
-    public static void naviAfterReports(Scanner keyboard, ArrayList<Transactions> transactions) {
-        while (true) {
-            System.out.println();
-            System.out.println("--------------------------------------------");
-            System.out.print("Press [H] to return Home or [R] to return to Reports: ");
-            String choice = keyboard.nextLine().trim().toUpperCase();
-
-            if (choice.equals("H")) {
-                return;
-            } else if (choice.equals("R")) {
-                reports(keyboard, transactions);
-                return;
-            } else {
-                System.out.println("Invalid choice. Please try again.");
-            }
-        }
-    }
-
-
     public static void sortNewest(ArrayList<Transactions> transactions){
         for (int i = 0; i < transactions.size(); i++) {
             for (int j = i + 1; j < transactions.size(); j++) {
@@ -512,10 +503,12 @@ public class VaultBook {
         }
     }
     public static void saveToFile(Scanner keyboard, ArrayList<Transactions> transactionsToSave,String reportTitle){
+        System.out.println();
         System.out.print("Do you want to save this report? (Y/N): ");
         String save = keyboard.nextLine().trim().toUpperCase();
 
         if (save.equals("YES") || save.equals("Y")) {
+            System.out.println();
             System.out.print("Enter the file name to save as: ");
             String fileName = keyboard.nextLine().trim();
 
@@ -566,35 +559,34 @@ public class VaultBook {
 
 
     public static void loadTransactions(ArrayList<Transactions> transactions) {
-            try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"))) {
-                String line;
-                line = reader.readLine();
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"))) {
+            String line = reader.readLine(); // Skip header line if it exists
 
-                while ((line = reader.readLine()) != null) {
-                    if (!line.isBlank()) {
-                        String[] parts = line.split("\\|");
-                        if (parts.length != 5) {
-                            System.out.println("Skipping malformed line: " + line);
-                            continue;
-                        }
+            while ((line = reader.readLine()) != null) {
+                if (line.isBlank()) continue;
 
-                        try {
-                            LocalDate date = LocalDate.parse(parts[0].trim());
-                            LocalTime time = LocalTime.parse(parts[1].trim());
-                            String description = parts[2].trim();
-                            String vendor = parts[3].trim();
-                            double amount = Double.parseDouble(parts[4].trim());
-
-                            transactions.add(new Transactions(date, time, description, amount, vendor));
-                        } catch (Exception e) {
-                            System.out.println("Skipping invalid line: " + line);
-                        }
-                    }
+                String[] parts = line.split("\\|");
+                if (parts.length != 5) {
+                    System.out.println("Skipping line: " + line);
+                    continue;
                 }
-            } catch (IOException e) {
-                System.out.println("CSV not found. Starting with empty ledger.");
+
+                try {
+                    LocalDate date = LocalDate.parse(parts[0].trim());
+                    LocalTime time = LocalTime.parse(parts[1].trim());
+                    String description = parts[2].trim();
+                    String vendor = parts[3].trim();
+                    double amount = Double.parseDouble(parts[4].trim());
+
+                    transactions.add(new Transactions(date, time, description, amount, vendor));
+                } catch (Exception e) {
+                    System.out.println("Skipping invalid line: " + line);
+                }
             }
+        } catch (IOException e) {
+            System.out.println("File not found. Starting with empty ledger.");
         }
+    }
 
     public static void appendTransaction(Transactions t) {
         try (FileWriter writer = new FileWriter(("src/main/resources/transactions.csv"), true)) {
