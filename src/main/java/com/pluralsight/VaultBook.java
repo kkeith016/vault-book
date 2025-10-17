@@ -237,6 +237,7 @@ public class VaultBook {
         printTableFooter();
         saveToFile(keyboard, reportTransactions,"ALL TRANSACTIONS");
     }
+
     public static void allDeposits(ArrayList<Transactions> transactions,Scanner keyboard) {
         System.out.println();
         System.out.println("==================================== ALL DEPOSITS ====================================");
@@ -252,6 +253,7 @@ public class VaultBook {
         printTableFooter();
         saveToFile(keyboard, reportTransactions,"All DEPOSITS");
     }
+
     public static void allPayments(ArrayList<Transactions> transactions,Scanner keyboard) {
         System.out.println();
         System.out.println("==================================== ALL PAYMENTS =======================================");
@@ -309,9 +311,8 @@ public class VaultBook {
                     System.out.println("Invalid option. Try again.");
                         System.out.println();
                     break;
-
             }
-            }
+          }
         }
 
 
@@ -462,7 +463,7 @@ public class VaultBook {
 // ------------------------------------------------------------
 // Includes:
 // - Header and footer display
-// - Navigation and sorting functions
+// - Sorting functions
 // - Transaction printing and saving
 // - File loading and appending
 // - Balance calculation
@@ -501,6 +502,8 @@ public class VaultBook {
             }
         }
     }
+
+
     public static void saveToFile(Scanner keyboard, ArrayList<Transactions> transactionsToSave,String reportTitle){
         System.out.println();
         System.out.print("Do you want to save this report? (Y/N): ");
@@ -539,7 +542,6 @@ public class VaultBook {
         }
     }
 
-
     public static void printTransactions(Transactions t){
         System.out.printf("%-12s | %-8s | %-25s | %-20s | %10.2f%n",
                 t.getDate(),
@@ -549,13 +551,11 @@ public class VaultBook {
                 t.getAmount());
     }
 
-
     public static void exit(Scanner keyboard) {
         keyboard.close();
         System.out.println("Thank you for using Vault Book!");
         System.exit(0);
     }
-
 
     public static void loadTransactions(ArrayList<Transactions> transactions) {
         try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"))) {
