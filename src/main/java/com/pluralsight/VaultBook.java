@@ -589,7 +589,7 @@ public class VaultBook {
 
     public static void appendTransaction(Transactions t) {
         try (FileWriter writer = new FileWriter(("src/main/resources/transactions.csv"), true)) {
-            writer.write(t.toString() + "\n");
+            writer.write(t.toString() + "\n"+ "\n");
         } catch (IOException e) {
             System.out.println("Error saving transaction!");
             e.printStackTrace();

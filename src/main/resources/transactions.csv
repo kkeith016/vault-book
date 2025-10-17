@@ -46,4 +46,6 @@ date|time|description|vendor|amount|
 2024-10-04|14:30:00|Consulting Fee|Freelance Client|700.00
 2025-10-09|09:10:00|Coffee|Starbucks|-8.25
 2025-04-03|14:30:00|Client Payment INV-1021|Acme Corp|1900.00
-2024-03-05|08:00:00|Monthly Rent|Main Street Realty|-950.00
+2024-03-05|08:00:00|Monthly Rent|Main Street Realty|-950.002025-10-17|10:44:46|test|YearUp|800.0
+2025-10-17|10:45:42|Test|Test|-800.0
+2025-10-17|11:01:46|Testing|testing|800.0
